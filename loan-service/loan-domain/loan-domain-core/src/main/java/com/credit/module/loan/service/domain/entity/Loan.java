@@ -4,6 +4,7 @@ import com.credit.module.loan.service.domain.valueobject.CustomerId;
 import com.credit.module.loan.service.domain.valueobject.LoanId;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Loan extends AggregateRoot<LoanId> {
 
@@ -28,10 +29,15 @@ public class Loan extends AggregateRoot<LoanId> {
 
 
     public void initializeLoan() {
+        setId(new LoanId(UUID.randomUUID()));
 //        todo: fill later
     }
 
-    public void validateInstallment() {
+    public void validateLoan() {
+//        todo: fill later
+    }
+
+    private void validateInstallment() {
 //        todo: fill later
     }
 
