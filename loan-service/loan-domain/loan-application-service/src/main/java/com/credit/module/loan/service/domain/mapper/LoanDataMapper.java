@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class LoanDataMapper {
 
     public Loan createLoanCommandToLoan(CreateLoanCommand createLoanCommand) {
-        return Loan.builder().customerId(new CustomerId(createLoanCommand.getCustomerId()))
+        return Loan.builder()/*.customerId(new CustomerId(createLoanCommand.getCustomerId()))*/
                 .interestRate(createLoanCommand.getInterestRate())
                 .numberOfInstallment(createLoanCommand.getNumberOfInstalments())
                 .loanAmount(new Money(createLoanCommand.getAmount()))

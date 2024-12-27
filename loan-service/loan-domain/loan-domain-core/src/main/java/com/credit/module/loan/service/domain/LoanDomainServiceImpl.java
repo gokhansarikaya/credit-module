@@ -10,8 +10,9 @@ import java.time.ZonedDateTime;
 public class LoanDomainServiceImpl implements LoanDomainService {
     @Override
     public Loan validateAndInitiateLoan(Loan loan, Customer customer) {
+        loan.inizializeCustomer(customer);
         loan.validateLoan();
-        loan.validateLoan();
+        loan.initializeLoan();
         return loan;
 //        return new LoanCreatedEvent(loan, ZonedDateTime.now(ZoneId.of("UTC")));
     }

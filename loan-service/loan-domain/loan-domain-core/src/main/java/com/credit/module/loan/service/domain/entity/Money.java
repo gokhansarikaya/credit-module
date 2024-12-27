@@ -15,6 +15,14 @@ public class Money {
         return amount;
     }
 
+    public boolean isGreaterThan(Money money) {
+        return this.amount != null && this.amount.compareTo(money.getAmount()) > 0;
+    }
+
+    public boolean isEqualOrGreaterThan(Money money) {
+        return this.amount != null && this.amount.compareTo(money.getAmount()) >= 0;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;

@@ -1,14 +1,18 @@
 package com.credit.module.loan.service.domain.entity;
 
+import com.credit.module.loan.service.domain.LoanDomainException;
 import com.credit.module.loan.service.domain.valueobject.CustomerId;
 import com.credit.module.loan.service.domain.valueobject.LoanId;
 
 import java.util.List;
 import java.util.UUID;
 
+import static com.credit.module.loan.service.domain.constants.DomainConstants.MAX_INTEREST_RATE;
+import static com.credit.module.loan.service.domain.constants.DomainConstants.MIN_INTEREST_RATE;
+
 public class Loan extends AggregateRoot<LoanId> {
 
-    private final CustomerId customerId;
+    private Customer customer;
     private final Money loanAmount;
     private final Integer numberOfInstallment;
     private final double interestRate;
@@ -16,7 +20,7 @@ public class Loan extends AggregateRoot<LoanId> {
 
     private Loan(Builder builder) {
         super.setId(builder.loanId);
-        customerId = builder.customerId;
+        customer = builder.customer;
         loanAmount = builder.loanAmount;
         numberOfInstallment = builder.numberOfInstallment;
         interestRate = builder.interestRate;
@@ -34,7 +38,22 @@ public class Loan extends AggregateRoot<LoanId> {
     }
 
     public void validateLoan() {
-//        todo: fill later
+//        validateCustomerLimit();
+        validateInstallment();
+        validateInterestRate();
+    }
+
+    private void validateInterestRate() {
+        if (Double.compare(this.interestRate, MIN_INTEREST_RATE) < 0 || Double.compare(this.interestRate, MAX_INTEREST_RATE) > 0) {
+            throw new LoanDomainException("Interest rate is not in valid range!");
+        }
+    }
+
+    private void validateCustomerLimit() {
+        if (this.loanAmount.isGreaterThan(this.customer.getCreditLimit())) {
+            throw new LoanDomainException("Customer does not have enough credit limit!");
+        }
+
     }
 
     private void validateInstallment() {
@@ -42,8 +61,8 @@ public class Loan extends AggregateRoot<LoanId> {
     }
 
 
-    public CustomerId getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
     public Money getLoanAmount() {
@@ -62,10 +81,14 @@ public class Loan extends AggregateRoot<LoanId> {
         this.loanInstallments = loanInstallments;
     }
 
+    public void inizializeCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
 
     public static final class Builder {
         private LoanId loanId;
-        private CustomerId customerId;
+        private Customer customer;
         private Money loanAmount;
         private Integer numberOfInstallment;
         private double interestRate;
@@ -79,8 +102,8 @@ public class Loan extends AggregateRoot<LoanId> {
             return this;
         }
 
-        public Builder customerId(CustomerId val) {
-            customerId = val;
+        public Builder customer(Customer val) {
+            customer = val;
             return this;
         }
 
