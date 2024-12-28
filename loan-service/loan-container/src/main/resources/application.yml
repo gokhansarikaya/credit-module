@@ -1,2 +1,23 @@
 server:
   port: 8181
+
+spring:
+  jpa:
+    show-sql: true
+    generate-ddl: true
+  hibernate:
+    ddl-auto: update
+#    ddl-auto: none
+  datasource:
+    url: jdbc:postgresql://localhost:5455/postgresDB
+#    url: "jdbc:h2:mem:testdb"
+    username: sa
+    password: password
+#    driverClassName: org.h2.Driver
+    driverClassName: org.postgresql.Driver
+#  sql:
+#    init:
+#      mode: always
+#      platform: h2
+#      schema-locations: classpath:init-schema.sql
+
