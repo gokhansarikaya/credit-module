@@ -9,6 +9,7 @@ import com.credit.module.loan.service.domain.entity.Loan;
 import com.credit.module.loan.service.domain.event.LoanCreatedEvent;
 import com.credit.module.loan.service.domain.mapper.LoanDataMapper;
 import com.credit.module.loan.service.domain.ports.output.repository.CustomerRepository;
+import com.credit.module.loan.service.domain.ports.output.repository.LoanRepository;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -24,11 +25,13 @@ public class LoanCreateCommandHandler {
     private final LoanDomainService loanDomainService;
     private final LoanDataMapper loanDataMapper;
     private final CustomerRepository customerRepository;
+    private final LoanRepository loanRepository;
 
-    public LoanCreateCommandHandler(LoanDomainService loanDomainService, LoanDataMapper loanDataMapper, CustomerRepository customerRepository) {
+    public LoanCreateCommandHandler(LoanDomainService loanDomainService, LoanDataMapper loanDataMapper, CustomerRepository customerRepository, LoanRepository loanRepository) {
         this.loanDomainService = loanDomainService;
         this.loanDataMapper = loanDataMapper;
         this.customerRepository = customerRepository;
+        this.loanRepository = loanRepository;
     }
 
     @Transactional
@@ -36,7 +39,12 @@ public class LoanCreateCommandHandler {
         Customer customer = checkCustomer(createLoanCommand.getCustomerId());
         Loan loan = loanDataMapper.createLoanCommandToLoan(createLoanCommand);
         Loan createdLoan = loanDomainService.validateAndInitiateLoan(loan, customer);
+        loanRepository.save(createdLoan);
         CreateLoanResponse createLoanResponse = loanDataMapper.loanToCreateLoanResponse(createdLoan);
+//        CreateLoanResponse createLoanResponse = CreateLoanResponse.builder()
+//                .message("Loan Created Successfully")
+//                .build();
+
         return createLoanResponse;
     }
 
