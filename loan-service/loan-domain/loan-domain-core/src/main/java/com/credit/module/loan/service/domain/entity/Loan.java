@@ -18,7 +18,7 @@ public class Loan extends AggregateRoot<LoanId> {
     private Customer customer;
     private final Money loanAmount;
     private final Integer numberOfInstallment;
-    private final double interestRate;
+    private final Double interestRate;
     private ZonedDateTime createDate;
     public List<LoanInstallment> loanInstallments;
 
@@ -82,7 +82,7 @@ public class Loan extends AggregateRoot<LoanId> {
     }
 
     private void validateInstallment() {
-        if (!INSTALLMENT_VALUES.contains(this.interestRate)) {
+        if (!INSTALLMENT_VALUES.contains(numberOfInstallment)) {
             throw new LoanDomainException("Installment value is not valid!");
         }
     }
