@@ -82,7 +82,9 @@ public class Loan extends AggregateRoot<LoanId> {
     }
 
     private void validateInstallment() {
-//        todo: fill later
+        if (!INSTALLMENT_VALUES.contains(this.interestRate)) {
+            throw new LoanDomainException("Installment value is not valid!");
+        }
     }
 
 
