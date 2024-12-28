@@ -4,6 +4,9 @@ import com.credit.module.loan.service.dataaccess.loan.entity.LoanEntity;
 import com.credit.module.loan.service.dataaccess.loan.entity.LoanInstallmentEntity;
 import com.credit.module.loan.service.domain.entity.Loan;
 import com.credit.module.loan.service.domain.entity.LoanInstallment;
+import com.credit.module.loan.service.domain.entity.Money;
+import com.credit.module.loan.service.domain.valueobject.LoanId;
+import com.credit.module.loan.service.domain.valueobject.LoanInstallmentId;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -39,4 +42,31 @@ public class LoanDataAccessMapper {
                 .collect(Collectors.toList());
         return loanInstallmentEntities;
     }
+
+    public Loan loanEntityToLoan(LoanEntity loanEntity) {
+        return Loan.builder()
+                .loanId(new LoanId(loanEntity.getId()))
+                .loanAmount(new Money(loanEntity.getLoanAmount()))
+                .createDate(loanEntity.getCreateDate())
+                .numberOfInstallment(loanEntity.getNumberOfInstallment())
+                .loanInstallments(loanEntity.getLoanInstallments()
+                        .stream()
+                        .map(this::loanInstallmentEntityToLoanInstallment).collect(Collectors.toList()))
+                .build();
+    }
+
+    private LoanInstallment loanInstallmentEntityToLoanInstallment(LoanInstallmentEntity loanInstallmentEntity) {
+        return LoanInstallment.builder()
+                .loanInstallmentId(new LoanInstallmentId(loanInstallmentEntity.getId()))
+                .loanId(new LoanId(loanInstallmentEntity.getLoan().getId()))
+                .dueDate(loanInstallmentEntity.getDueDate())
+                .isPaid(loanInstallmentEntity.getIsPaid())
+                .amount(new Money(loanInstallmentEntity.getAmount()))
+                .paidAmount(new Money(loanInstallmentEntity.getPaidAmount()))
+                .paymentDate(loanInstallmentEntity.getPaymentDate())
+                .build();
+
+    }
+
+
 }
