@@ -9,11 +9,22 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomerDataAccessMapper {
     public Customer customerEntityToCustomer(CustomerEntity customerEntity) {
-        return new Customer(
-                new CustomerId(customerEntity.getId()),
-                customerEntity.getName(),
-                customerEntity.getSurname(),
-                new Money(customerEntity.getCreditLimit()),
-                new Money(customerEntity.getUsedCreditLimit()));
+        return Customer.builder()
+                .id(new CustomerId(customerEntity.getId()))
+                .name(customerEntity.getName())
+                .surname(customerEntity.getSurname())
+                .creditLimit(new Money(customerEntity.getCreditLimit()))
+                .usedCreditLimit(new Money(customerEntity.getUsedCreditLimit()))
+                .build();
+    }
+
+    public CustomerEntity customerToCustomerEntity(Customer customer){
+        return CustomerEntity.builder()
+                .id(customer.getId().getValue())
+                .name(customer.getName())
+                .surname(customer.getSurname())
+                .creditLimit(customer.getCreditLimit().getAmount())
+                .usedCreditLimit(customer.getUsedCreditLimit().getAmount())
+                .build();
     }
 }

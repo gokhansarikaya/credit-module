@@ -1,5 +1,6 @@
 package com.credit.module.loan.service.dataaccess.loan.entity;
 
+import com.credit.module.loan.service.dataaccess.customer.entity.CustomerEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,11 @@ public class LoanEntity {
 
     @Id
     private UUID id;
-    private UUID customerId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customer_id")
+    private CustomerEntity customer;
+
     private BigDecimal loanAmount;
     private Integer numberOfInstallment;
     private ZonedDateTime createDate;

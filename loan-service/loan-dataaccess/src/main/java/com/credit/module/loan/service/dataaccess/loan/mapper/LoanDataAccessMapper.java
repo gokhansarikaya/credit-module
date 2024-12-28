@@ -1,7 +1,10 @@
 package com.credit.module.loan.service.dataaccess.loan.mapper;
 
+import com.credit.module.loan.service.dataaccess.customer.entity.CustomerEntity;
+import com.credit.module.loan.service.dataaccess.customer.mapper.CustomerDataAccessMapper;
 import com.credit.module.loan.service.dataaccess.loan.entity.LoanEntity;
 import com.credit.module.loan.service.dataaccess.loan.entity.LoanInstallmentEntity;
+import com.credit.module.loan.service.domain.entity.Customer;
 import com.credit.module.loan.service.domain.entity.Loan;
 import com.credit.module.loan.service.domain.entity.LoanInstallment;
 import com.credit.module.loan.service.domain.entity.Money;
@@ -14,11 +17,16 @@ import java.util.stream.Collectors;
 
 @Component
 public class LoanDataAccessMapper {
+    private final CustomerDataAccessMapper customerDataAccessMapper;
+
+    public LoanDataAccessMapper(CustomerDataAccessMapper customerDataAccessMapper) {
+        this.customerDataAccessMapper = customerDataAccessMapper;
+    }
 
     public LoanEntity loanToLoanEntity(Loan loan) {
         LoanEntity loanEntity = LoanEntity.builder()
                 .id(loan.getId().getValue())
-                .customerId(loan.getCustomer().getId().getValue())
+                .customer(customerDataAccessMapper.customerToCustomerEntity(loan.getCustomer()))
                 .loanAmount(loan.getLoanAmount().getAmount())
                 .numberOfInstallment(loan.getNumberOfInstallment())
                 .createDate(loan.getCreateDate())
@@ -28,6 +36,15 @@ public class LoanDataAccessMapper {
         loanEntity.getLoanInstallments().forEach(loanInstallmentEntity -> loanInstallmentEntity.setLoan(loanEntity));
         return loanEntity;
     }
+
+/*    private CustomerEntity customerToCustomerEntity(Customer customer){
+        return CustomerEntity.builder()
+                .name(customer.getName())
+                .surname(customer.getSurname())
+                .creditLimit(customer.getCreditLimit().getAmount())
+                .usedCreditLimit(customer.getUsedCreditLimit().getAmount())
+                .build();
+    }*/
 
     private List<LoanInstallmentEntity> loanInstallmentsToLoanInstallmentEntity(List<LoanInstallment> loanInstallments) {
         List<LoanInstallmentEntity> loanInstallmentEntities = loanInstallments.stream()
@@ -45,6 +62,7 @@ public class LoanDataAccessMapper {
 
     public Loan loanEntityToLoan(LoanEntity loanEntity) {
         return Loan.builder()
+                .customer(customerDataAccessMapper.customerEntityToCustomer(loanEntity.getCustomer()))
                 .loanId(new LoanId(loanEntity.getId()))
                 .loanAmount(new Money(loanEntity.getLoanAmount()))
                 .createDate(loanEntity.getCreateDate())

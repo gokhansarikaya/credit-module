@@ -1,11 +1,11 @@
 package com.credit.module.loan.service.dataaccess.customer.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.credit.module.loan.service.dataaccess.loan.entity.LoanEntity;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -23,4 +23,8 @@ public class CustomerEntity {
     private String surname;
     private BigDecimal creditLimit;
     private BigDecimal usedCreditLimit;
+
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<LoanEntity> loans;
 }
