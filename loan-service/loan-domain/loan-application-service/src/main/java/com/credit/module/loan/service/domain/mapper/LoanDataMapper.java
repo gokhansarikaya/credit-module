@@ -12,7 +12,6 @@ import com.credit.module.loan.service.domain.entity.Money;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component

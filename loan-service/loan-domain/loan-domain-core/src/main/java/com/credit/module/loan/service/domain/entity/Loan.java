@@ -2,7 +2,6 @@ package com.credit.module.loan.service.domain.entity;
 
 import com.credit.module.loan.service.domain.LoanDomainException;
 import com.credit.module.loan.service.domain.utility.DateUtility;
-import com.credit.module.loan.service.domain.valueobject.CustomerId;
 import com.credit.module.loan.service.domain.valueobject.LoanId;
 import com.credit.module.loan.service.domain.valueobject.LoanInstallmentId;
 

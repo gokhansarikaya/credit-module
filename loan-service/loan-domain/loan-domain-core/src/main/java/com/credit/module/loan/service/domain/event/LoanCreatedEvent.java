@@ -1,6 +1,5 @@
 package com.credit.module.loan.service.domain.event;
 
-import com.credit.module.loan.service.domain.entity.Customer;
 import com.credit.module.loan.service.domain.entity.Loan;
 
 import java.time.ZonedDateTime;
