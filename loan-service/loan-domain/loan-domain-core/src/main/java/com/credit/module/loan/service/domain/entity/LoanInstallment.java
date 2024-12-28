@@ -3,7 +3,10 @@ package com.credit.module.loan.service.domain.entity;
 import com.credit.module.loan.service.domain.valueobject.LoanId;
 import com.credit.module.loan.service.domain.valueobject.LoanInstallmentId;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+
+import static com.credit.module.loan.service.domain.constants.DomainConstants.UTC;
 
 public class LoanInstallment extends BaseEntity<LoanInstallmentId> {
     private LoanId loanId;
@@ -25,6 +28,12 @@ public class LoanInstallment extends BaseEntity<LoanInstallmentId> {
 
     public static Builder builder() {
         return new Builder();
+    }
+
+    public void payInstallment(){
+        paidAmount = amount;
+        paymentDate = ZonedDateTime.now(ZoneId.of(UTC));
+        isPaid = Boolean.TRUE;
     }
 
     public LoanId getLoanId() {

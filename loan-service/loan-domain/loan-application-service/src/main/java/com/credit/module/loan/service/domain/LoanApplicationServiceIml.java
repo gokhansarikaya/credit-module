@@ -6,9 +6,12 @@ import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryReques
 import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryResponse;
 import com.credit.module.loan.service.domain.dto.list.LoanQueryRequest;
 import com.credit.module.loan.service.domain.dto.list.LoanQueryResponse;
+import com.credit.module.loan.service.domain.dto.pay.PayLoanRequest;
+import com.credit.module.loan.service.domain.dto.pay.PayLoanResponse;
 import com.credit.module.loan.service.domain.handler.LoanCreateCommandHandler;
 import com.credit.module.loan.service.domain.handler.LoanInstallmentQueryHandler;
 import com.credit.module.loan.service.domain.handler.LoanListCommandHandler;
+import com.credit.module.loan.service.domain.handler.LoanPayCommandHandler;
 import com.credit.module.loan.service.domain.ports.input.service.LoanApplicationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,13 +24,15 @@ public class LoanApplicationServiceIml implements LoanApplicationService {
     private final LoanCreateCommandHandler loanCreateCommandHandler;
     private final LoanListCommandHandler loanListCommandHandler;
     private final LoanInstallmentQueryHandler loanInstallmentQueryHandler;
+    private final LoanPayCommandHandler loanPayCommandHandler;
 
     public LoanApplicationServiceIml(LoanCreateCommandHandler loanCreateCommandHandler,
                                      LoanListCommandHandler loanListCommandHandler,
-                                     LoanInstallmentQueryHandler loanInstallmentQueryHandler) {
+                                     LoanInstallmentQueryHandler loanInstallmentQueryHandler, LoanPayCommandHandler loanPayCommandHandler) {
         this.loanCreateCommandHandler = loanCreateCommandHandler;
         this.loanListCommandHandler = loanListCommandHandler;
         this.loanInstallmentQueryHandler = loanInstallmentQueryHandler;
+        this.loanPayCommandHandler = loanPayCommandHandler;
     }
 
     @Override
@@ -43,5 +48,10 @@ public class LoanApplicationServiceIml implements LoanApplicationService {
     @Override
     public LoanInstallmentQueryResponse getLoanInstallments(LoanInstallmentQueryRequest loanInstallmentQueryRequest) {
         return loanInstallmentQueryHandler.getLoanInstallments(loanInstallmentQueryRequest);
+    }
+
+    @Override
+    public PayLoanResponse payLoan(PayLoanRequest payLoanRequest) {
+        return loanPayCommandHandler.payLoan(payLoanRequest);
     }
 }

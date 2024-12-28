@@ -6,6 +6,7 @@ import com.credit.module.loan.service.dataaccess.loan.repository.LoanJpaReposito
 import com.credit.module.loan.service.domain.entity.Loan;
 import com.credit.module.loan.service.domain.ports.output.repository.LoanRepository;
 import com.credit.module.loan.service.domain.valueobject.CustomerId;
+import com.credit.module.loan.service.domain.valueobject.LoanId;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class LoanRepositoyImpl implements LoanRepository {
     @Override
     public Loan save(Loan loan) {
         loanJpaRepository.save(loanDataAccessMapper.loanToLoanEntity(loan));
+        //todo: return Loan
         return null;
     }
 
@@ -35,5 +37,10 @@ public class LoanRepositoyImpl implements LoanRepository {
         return loanEntities.map(
                 loanEntityList -> loanEntityList.stream().map(
                         loanDataAccessMapper::loanEntityToLoan).collect(Collectors.toList()));
+    }
+
+    @Override
+    public Optional<Loan> findById(LoanId loanId) {
+        return loanJpaRepository.findById(loanId.getValue()).map(loanDataAccessMapper::loanEntityToLoan);
     }
 }

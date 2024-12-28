@@ -6,9 +6,11 @@ import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryRespon
 import com.credit.module.loan.service.domain.dto.list.LoanInstallmentResponse;
 import com.credit.module.loan.service.domain.dto.list.LoanQueryResponse;
 import com.credit.module.loan.service.domain.dto.list.LoanResponse;
+import com.credit.module.loan.service.domain.dto.pay.PayLoanResponse;
 import com.credit.module.loan.service.domain.entity.Loan;
 import com.credit.module.loan.service.domain.entity.LoanInstallment;
 import com.credit.module.loan.service.domain.entity.Money;
+import com.credit.module.loan.service.domain.entity.PayInformation;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -52,5 +54,13 @@ public class LoanDataMapper {
                         .paymentDate(loanInstallment.getPaymentDate())
                         .dueDate(loanInstallment.getDueDate())
                         .build()).collect(Collectors.toList())).build();
+    }
+
+    public PayLoanResponse payInformationToPayLoanResponse(PayInformation payInformation) {
+        return PayLoanResponse.builder()
+                .totalAmountSpent(payInformation.getTotalPaidAmount().getAmount())
+                .isPaidCompletely(payInformation.getPaidCompletely())
+                .paidInstallments(payInformation.getNumberOfPaidInstallments())
+                .build();
     }
 }

@@ -37,8 +37,11 @@ public class Loan extends AggregateRoot<LoanId> {
     }
 
     public Boolean isPaid() {
-        //todo
-        return Boolean.FALSE;
+        for (LoanInstallment loanInstallment:loanInstallments) {
+            if (!loanInstallment.isPaid())
+                return false;
+        }
+        return true;
     }
 
 
@@ -87,6 +90,21 @@ public class Loan extends AggregateRoot<LoanId> {
         }
     }
 
+    public PayInformation payLoan(Money payAmount) {
+        Money totalPayAmount = payAmount;
+        int payCount = 0;
+        for (LoanInstallment loanInstallment : loanInstallments) {
+            if (!loanInstallment.isPaid() && totalPayAmount.isGreaterThan(loanInstallment.getAmount())) {
+                loanInstallment.payInstallment();
+                payCount++;
+                totalPayAmount = totalPayAmount.subtract(loanInstallment.getAmount());
+            }
+        }
+        return PayInformation.builder().
+                totalPaidAmount(payAmount.subtract(totalPayAmount)).
+                numberOfPaidInstallments(payCount)
+                .isPaidCompletely(isPaid()).build();
+    }
 
     public Customer getCustomer() {
         return customer;

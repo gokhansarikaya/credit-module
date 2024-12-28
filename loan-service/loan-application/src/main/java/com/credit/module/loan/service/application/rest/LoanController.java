@@ -6,6 +6,8 @@ import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryReques
 import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryResponse;
 import com.credit.module.loan.service.domain.dto.list.LoanQueryRequest;
 import com.credit.module.loan.service.domain.dto.list.LoanQueryResponse;
+import com.credit.module.loan.service.domain.dto.pay.PayLoanRequest;
+import com.credit.module.loan.service.domain.dto.pay.PayLoanResponse;
 import com.credit.module.loan.service.domain.ports.input.service.LoanApplicationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ public class LoanController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateLoanResponse> createLoan(@RequestBody CreateLoanCommand createLoanCommand){
+    public ResponseEntity<CreateLoanResponse> createLoan(@RequestBody CreateLoanCommand createLoanCommand) {
         log.info("Creating loan");
         CreateLoanResponse createLoanResponse = loanApplicationService.createLoan(createLoanCommand);
         log.info("Loan created");
@@ -42,5 +44,11 @@ public class LoanController {
     public ResponseEntity<LoanInstallmentQueryResponse> getLoanInstallments(@PathVariable UUID loanId) {
         LoanInstallmentQueryResponse loanInstallmentQueryResponse = loanApplicationService.getLoanInstallments(LoanInstallmentQueryRequest.builder().loanId(loanId).build());
         return ResponseEntity.ok(loanInstallmentQueryResponse);
+    }
+
+    @PostMapping("/pay")
+    public ResponseEntity<PayLoanResponse> payLoan(@RequestBody PayLoanRequest payLoanRequest) {
+        PayLoanResponse payLoanResponse = loanApplicationService.payLoan(payLoanRequest);
+        return ResponseEntity.ok(payLoanResponse);
     }
 }
