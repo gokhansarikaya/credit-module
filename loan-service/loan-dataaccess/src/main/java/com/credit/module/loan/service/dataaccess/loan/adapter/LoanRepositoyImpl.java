@@ -32,6 +32,8 @@ public class LoanRepositoyImpl implements LoanRepository {
     @Override
     public Optional<List<Loan>> findByCustomerId(CustomerId customerId) {
         Optional<List<LoanEntity>> loanEntities = loanJpaRepository.findByCustomerId(customerId.getValue());
-        return loanEntities.map(loanEntityList -> loanEntityList.stream().map(loanDataAccessMapper::loanEntityToLoan).collect(Collectors.toList()));
+        return loanEntities.map(
+                loanEntityList -> loanEntityList.stream().map(
+                        loanDataAccessMapper::loanEntityToLoan).collect(Collectors.toList()));
     }
 }

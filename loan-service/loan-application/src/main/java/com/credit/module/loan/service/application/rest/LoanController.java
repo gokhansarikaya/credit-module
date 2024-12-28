@@ -2,6 +2,8 @@ package com.credit.module.loan.service.application.rest;
 
 import com.credit.module.loan.service.domain.dto.create.CreateLoanCommand;
 import com.credit.module.loan.service.domain.dto.create.CreateLoanResponse;
+import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryRequest;
+import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryResponse;
 import com.credit.module.loan.service.domain.dto.list.LoanQueryRequest;
 import com.credit.module.loan.service.domain.dto.list.LoanQueryResponse;
 import com.credit.module.loan.service.domain.ports.input.service.LoanApplicationService;
@@ -34,5 +36,11 @@ public class LoanController {
     public ResponseEntity<LoanQueryResponse> getLoans(@PathVariable UUID customerId) {
         LoanQueryResponse loanQueryResponse = loanApplicationService.getLoans(LoanQueryRequest.builder().customerId(customerId).build());
         return ResponseEntity.ok(loanQueryResponse);
+    }
+
+    @GetMapping("installment/{loanId}")
+    public ResponseEntity<LoanInstallmentQueryResponse> getLoanInstallments(@PathVariable UUID loanId) {
+        LoanInstallmentQueryResponse loanInstallmentQueryResponse = loanApplicationService.getLoanInstallments(LoanInstallmentQueryRequest.builder().loanId(loanId).build());
+        return ResponseEntity.ok(loanInstallmentQueryResponse);
     }
 }

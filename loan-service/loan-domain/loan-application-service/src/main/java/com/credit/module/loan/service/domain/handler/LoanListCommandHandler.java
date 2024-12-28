@@ -30,7 +30,7 @@ public class LoanListCommandHandler {
     public LoanQueryResponse getLoans(LoanQueryRequest loanQueryRequest) {
         Optional<List<Loan>> loans = loanRepository.findByCustomerId(new CustomerId(loanQueryRequest.getCustomerId()));
 
-        LoanQueryResponse loanQueryResponse = loanDataMapper.loanToListLoanResponse(loans.orElseGet(ArrayList::new));
+        LoanQueryResponse loanQueryResponse = loanDataMapper.loanToLoanQueryResponse(loans.orElseGet(ArrayList::new));
         return loanQueryResponse;
     }
 }

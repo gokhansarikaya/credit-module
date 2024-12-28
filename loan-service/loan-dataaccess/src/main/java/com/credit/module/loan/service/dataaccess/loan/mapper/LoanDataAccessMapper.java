@@ -55,7 +55,7 @@ public class LoanDataAccessMapper {
                 .build();
     }
 
-    private LoanInstallment loanInstallmentEntityToLoanInstallment(LoanInstallmentEntity loanInstallmentEntity) {
+    public LoanInstallment loanInstallmentEntityToLoanInstallment(LoanInstallmentEntity loanInstallmentEntity) {
         return LoanInstallment.builder()
                 .loanInstallmentId(new LoanInstallmentId(loanInstallmentEntity.getId()))
                 .loanId(new LoanId(loanInstallmentEntity.getLoan().getId()))
