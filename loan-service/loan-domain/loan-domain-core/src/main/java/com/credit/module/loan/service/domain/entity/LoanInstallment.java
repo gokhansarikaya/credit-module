@@ -30,7 +30,7 @@ public class LoanInstallment extends BaseEntity<LoanInstallmentId> {
         return new Builder();
     }
 
-    public void payInstallment(){
+    public void payInstallment() {
         paidAmount = amount;
         paymentDate = ZonedDateTime.now(ZoneId.of(UTC));
         isPaid = Boolean.TRUE;

@@ -18,7 +18,7 @@ public class CustomerDataAccessMapper {
                 .build();
     }
 
-    public CustomerEntity customerToCustomerEntity(Customer customer){
+    public CustomerEntity customerToCustomerEntity(Customer customer) {
         return CustomerEntity.builder()
                 .id(customer.getId().getValue())
                 .name(customer.getName())

@@ -10,6 +10,5 @@ public class LoanDomainServiceImpl implements LoanDomainService {
         loan.validateLoan();
         loan.initializeLoan();
         return loan;
-//        return new LoanCreatedEvent(loan, ZonedDateTime.now(ZoneId.of("UTC")));
     }
 }

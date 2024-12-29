@@ -26,9 +26,7 @@ public class LoanRepositoyImpl implements LoanRepository {
 
     @Override
     public Loan save(Loan loan) {
-        loanJpaRepository.save(loanDataAccessMapper.loanToLoanEntity(loan));
-        //todo: return Loan
-        return null;
+        return loanDataAccessMapper.loanEntityToLoan(loanJpaRepository.save(loanDataAccessMapper.loanToLoanEntity(loan)));
     }
 
     @Override

@@ -7,7 +7,7 @@ public class LoanDomainException extends DomainException {
         super(message);
     }
 
-    public LoanDomainException(String message, Throwable cause){
+    public LoanDomainException(String message, Throwable cause) {
         super(message, cause);
     }
 }

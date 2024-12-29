@@ -29,7 +29,7 @@ public class LoanPayCommandHandler {
 
     @Transactional
     public PayLoanResponse payLoan(PayLoanRequest payLoanRequest) {
-        Loan loan= checkLoan(payLoanRequest.getLoanId());
+        Loan loan = checkLoan(payLoanRequest.getLoanId());
         PayInformation payInformation = loan.payLoan(new Money(payLoanRequest.getAmount()));
         loanRepository.save(loan);
         return loanDataMapper.payInformationToPayLoanResponse(payInformation);
