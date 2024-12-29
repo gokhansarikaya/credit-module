@@ -105,7 +105,7 @@ public class Loan extends AggregateRoot<LoanId> {
     }
 
     private ZonedDateTime lastPayableDate(ZonedDateTime now, Integer payableMonthRange) {
-        return endOfTheDay(addMonth(firstDayOfMonth(now), payableMonthRange));
+        return endOfTheDay(addMonth(firstDayOfMonth(now), payableMonthRange -1));
     }
 
     private void customerUsedLimitProcess() {
