@@ -18,4 +18,16 @@ public class DateUtility {
         calendar.set(Calendar.MILLISECOND, 999);
         return ZonedDateTime.ofInstant(calendar.toInstant(), ZoneId.of(UTC));
     }
+
+    public static ZonedDateTime firstDayOfMonth(long time) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);// if you want to make sure you're at midnight
+        return ZonedDateTime.ofInstant(calendar.toInstant(), ZoneId.of(UTC));
+    }
+
+    public static ZonedDateTime lastPayableDate(ZonedDateTime date, Integer monthRange) {
+        return endOfTheFirstDayOfMonth(firstDayOfMonth(date.toInstant().toEpochMilli()).toInstant().toEpochMilli(), monthRange);
+    }
 }

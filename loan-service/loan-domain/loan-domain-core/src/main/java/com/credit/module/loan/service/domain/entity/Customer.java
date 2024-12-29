@@ -41,6 +41,14 @@ public class Customer extends AggregateRoot<CustomerId> {
         return usedCreditLimit;
     }
 
+    public void useCredit(Money usedCredit) {
+        usedCreditLimit = usedCreditLimit.add(usedCredit);
+    }
+
+    public void finishCredit(Money usedCredit) {
+        usedCreditLimit = usedCreditLimit.subtract(usedCredit);
+    }
+
 
     public static final class Builder {
         private CustomerId customerId;

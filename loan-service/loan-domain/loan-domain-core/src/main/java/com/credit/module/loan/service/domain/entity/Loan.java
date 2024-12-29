@@ -8,6 +8,7 @@ import com.credit.module.loan.service.domain.valueobject.LoanInstallmentId;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,22 +23,8 @@ public class Loan extends AggregateRoot<LoanId> {
     private ZonedDateTime createDate;
     public List<LoanInstallment> loanInstallments;
 
-    private Loan(Builder builder) {
-        super.setId(builder.loanId);
-        customer = builder.customer;
-        loanAmount = builder.loanAmount;
-        numberOfInstallment = builder.numberOfInstallment;
-        interestRate = builder.interestRate;
-        createDate = builder.createDate;
-        setLoanInstallments(builder.loanInstallments);
-    }
-
-    public static Builder builder() {
-        return new Builder();
-    }
-
     public Boolean isPaid() {
-        for (LoanInstallment loanInstallment:loanInstallments) {
+        for (LoanInstallment loanInstallment : loanInstallments) {
             if (!loanInstallment.isPaid())
                 return false;
         }
@@ -49,6 +36,13 @@ public class Loan extends AggregateRoot<LoanId> {
         setId(new LoanId(UUID.randomUUID()));
         this.createDate = ZonedDateTime.now(ZoneId.of(UTC));
         initializeLoanInstallments();
+        this.customer.useCredit(loanAmount);
+    }
+
+    public void validateLoan() {
+        validateCustomerLimit();
+        validateInstallment();
+        validateInterestRate();
     }
 
     private void initializeLoanInstallments() {
@@ -66,18 +60,6 @@ public class Loan extends AggregateRoot<LoanId> {
         }
     }
 
-    public void validateLoan() {
-        validateCustomerLimit();
-        validateInstallment();
-        validateInterestRate();
-    }
-
-    private void validateInterestRate() {
-        if (Double.compare(this.interestRate, MIN_INTEREST_RATE) < 0 || Double.compare(this.interestRate, MAX_INTEREST_RATE) > 0) {
-            throw new LoanDomainException("Interest rate is not in valid range!");
-        }
-    }
-
     private void validateCustomerLimit() {
         if (this.loanAmount.isGreaterThan(this.customer.getCreditLimit().subtract(this.customer.getUsedCreditLimit()))) {
             throw new LoanDomainException("Customer does not have enough credit limit!");
@@ -90,20 +72,36 @@ public class Loan extends AggregateRoot<LoanId> {
         }
     }
 
+    private void validateInterestRate() {
+        if (Double.compare(this.interestRate, MIN_INTEREST_RATE) < 0 || Double.compare(this.interestRate, MAX_INTEREST_RATE) > 0) {
+            throw new LoanDomainException("Interest rate is not in valid range!");
+        }
+    }
+
     public PayInformation payLoan(Money payAmount) {
+        ZonedDateTime lastetPayableDate = DateUtility.lastPayableDate(ZonedDateTime.now(ZoneId.of(UTC)), 3);
         Money totalPayAmount = payAmount;
         int payCount = 0;
-        for (LoanInstallment loanInstallment : loanInstallments) {
-            if (!loanInstallment.isPaid() && totalPayAmount.isGreaterThan(loanInstallment.getAmount())) {
+        for (LoanInstallment loanInstallment : loanInstallments.stream().sorted(Comparator.comparing(LoanInstallment::getDueDate)).toList()) {
+            if (!loanInstallment.isPaid()
+                    && totalPayAmount.isGreaterThan(loanInstallment.getAmount())
+                    && loanInstallment.getDueDate().compareTo(lastetPayableDate) <= 0) {
                 loanInstallment.payInstallment();
                 payCount++;
                 totalPayAmount = totalPayAmount.subtract(loanInstallment.getAmount());
             }
         }
+        customerUsedLimitProcess();
+
         return PayInformation.builder().
                 totalPaidAmount(payAmount.subtract(totalPayAmount)).
                 numberOfPaidInstallments(payCount)
                 .isPaidCompletely(isPaid()).build();
+    }
+
+    private void customerUsedLimitProcess() {
+        if (isPaid())
+            this.customer.finishCredit(loanAmount);
     }
 
     public Customer getCustomer() {
@@ -136,6 +134,20 @@ public class Loan extends AggregateRoot<LoanId> {
 
     public void inizializeCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    private Loan(Builder builder) {
+        super.setId(builder.loanId);
+        customer = builder.customer;
+        loanAmount = builder.loanAmount;
+        numberOfInstallment = builder.numberOfInstallment;
+        interestRate = builder.interestRate;
+        createDate = builder.createDate;
+        setLoanInstallments(builder.loanInstallments);
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
 

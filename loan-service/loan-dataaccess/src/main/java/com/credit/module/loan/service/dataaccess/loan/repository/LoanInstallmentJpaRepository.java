@@ -11,5 +11,5 @@ import java.util.UUID;
 
 @Repository
 public interface LoanInstallmentJpaRepository extends JpaRepository<LoanInstallmentEntity, LoanInstallmentId> {
-    Optional<List<LoanInstallmentEntity>> findByLoanId(UUID value);
+    Optional<List<LoanInstallmentEntity>> findByLoanIdOrderByIdAsc(UUID value);
 }

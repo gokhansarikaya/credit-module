@@ -24,7 +24,7 @@ public class LoanInstallmentRepositoryImpl implements LoanInstallmentRepository 
 
     @Override
     public Optional<List<LoanInstallment>> findByLoanId(LoanId loanId) {
-        Optional<List<LoanInstallmentEntity>> loanInstallmentEntities = loanInstallmentJpaRepository.findByLoanId(loanId.getValue());
+        Optional<List<LoanInstallmentEntity>> loanInstallmentEntities = loanInstallmentJpaRepository.findByLoanIdOrderByIdAsc(loanId.getValue());
 
         return loanInstallmentEntities.map(
                 loanInstallmentEntityist -> loanInstallmentEntityist.stream().map(
