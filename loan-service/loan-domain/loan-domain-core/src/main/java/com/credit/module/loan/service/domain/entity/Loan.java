@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.credit.module.loan.service.domain.constants.DomainConstants.*;
+import static com.credit.module.loan.service.domain.utility.DateUtility.*;
 
 public class Loan extends AggregateRoot<LoanId> {
 
@@ -53,11 +54,15 @@ public class Loan extends AggregateRoot<LoanId> {
                             .loanId(super.getId())
                             .loanInstallmentId(new LoanInstallmentId((long) (i + 1)))
                             .amount((this.loanAmount.multiply(this.interestRate + 1)).devide(this.numberOfInstallment))
-                            .dueDate(DateUtility.endOfTheFirstDayOfMonth(this.createDate.toInstant().toEpochMilli(), i + 1))
+                            .dueDate(calculateDueDate(i))
                             .paidAmount(Money.ZERO)
                             .isPaid(Boolean.FALSE)
                             .build());
         }
+    }
+
+    private ZonedDateTime calculateDueDate(int i) {
+        return endOfTheDay(firstDayOfMonth(DateUtility.addMonth(this.createDate, i + 1)));
     }
 
     private void validateCustomerLimit() {
@@ -79,12 +84,12 @@ public class Loan extends AggregateRoot<LoanId> {
     }
 
     public PayInformation payLoan(Money payAmount) {
-        ZonedDateTime lastetPayableDate = DateUtility.lastPayableDate(ZonedDateTime.now(ZoneId.of(UTC)), PAYABLE_MONTH_RANGE);
+        ZonedDateTime lastetPayableDate = lastPayableDate(ZonedDateTime.now(ZoneId.of(UTC)), PAYABLE_MONTH_RANGE);
         Money totalPayAmount = payAmount;
         int payCount = 0;
         for (LoanInstallment loanInstallment : loanInstallments.stream().sorted(Comparator.comparing(LoanInstallment::getDueDate)).toList()) {
             if (!loanInstallment.isPaid()
-                    && totalPayAmount.isGreaterThan(loanInstallment.getAmount())
+                    && totalPayAmount.isEqualOrGreaterThan(loanInstallment.getAmount())
                     && loanInstallment.getDueDate().compareTo(lastetPayableDate) <= 0) {
                 loanInstallment.payInstallment();
                 payCount++;
@@ -97,6 +102,10 @@ public class Loan extends AggregateRoot<LoanId> {
                 totalPaidAmount(payAmount.subtract(totalPayAmount)).
                 numberOfPaidInstallments(payCount)
                 .isPaidCompletely(isPaid()).build();
+    }
+
+    private ZonedDateTime lastPayableDate(ZonedDateTime now, Integer payableMonthRange) {
+        return endOfTheDay(addMonth(firstDayOfMonth(now), payableMonthRange));
     }
 
     private void customerUsedLimitProcess() {
