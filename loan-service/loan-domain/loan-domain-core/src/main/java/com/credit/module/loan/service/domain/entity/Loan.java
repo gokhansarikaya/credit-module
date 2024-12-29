@@ -79,7 +79,7 @@ public class Loan extends AggregateRoot<LoanId> {
     }
 
     public PayInformation payLoan(Money payAmount) {
-        ZonedDateTime lastetPayableDate = DateUtility.lastPayableDate(ZonedDateTime.now(ZoneId.of(UTC)), 3);
+        ZonedDateTime lastetPayableDate = DateUtility.lastPayableDate(ZonedDateTime.now(ZoneId.of(UTC)), PAYABLE_MONTH_RANGE);
         Money totalPayAmount = payAmount;
         int payCount = 0;
         for (LoanInstallment loanInstallment : loanInstallments.stream().sorted(Comparator.comparing(LoanInstallment::getDueDate)).toList()) {
