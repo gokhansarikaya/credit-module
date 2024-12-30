@@ -1,0 +1,145 @@
+{
+	"info": {
+		"_postman_id": "1827a105-61f7-4ffd-a260-1ad5f6583f4e",
+		"name": "LoanService",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12713851"
+	},
+	"item": [
+		{
+			"name": "CreateLoan",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"customerId\": \"123e4567-e89b-42d3-a456-556642440000\",\r\n    \"amount\": 100,\r\n    \"interestRate\": 0.5,\r\n    \"numberOfInstalments\": 6\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8181/loans",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"loans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListLoan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/loans/123e4567-e89b-42d3-a456-556642440000",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"loans",
+						"123e4567-e89b-42d3-a456-556642440000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetInstallments",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8181/loans/installment/9fea8e58-0c4e-4f96-81ef-dc85f88fdf74",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"loans",
+						"installment",
+						"9fea8e58-0c4e-4f96-81ef-dc85f88fdf74"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PayLoan",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"loanId\": \"9fea8e58-0c4e-4f96-81ef-dc85f88fdf74\",\r\n    \"amount\": \"400\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8181/loans/pay",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8181",
+					"path": [
+						"loans",
+						"pay"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "password",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "testUser",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
