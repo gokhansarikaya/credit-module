@@ -35,7 +35,7 @@ The project was implemented in accordance with the microservice structure by app
 
 
 #### Project Modules
-* __loan-container:__ that is the root of the all api modules. So includes the main method.
+* __loan-container:__ that is the root of the all api modules and creates Docker image So includes the main method.
 * __loan-application:__ This is where the end user interacts with the module.
 * __loan-dataaccess:__ responsible for data operations
 * __loan-domain:__ includes core business logic, and consist of 2 modules (loan-application-service and loan-domain-core)
