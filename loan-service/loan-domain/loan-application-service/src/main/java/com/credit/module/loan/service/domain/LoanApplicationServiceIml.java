@@ -1,6 +1,6 @@
 package com.credit.module.loan.service.domain;
 
-import com.credit.module.loan.service.domain.dto.create.CreateLoanCommand;
+import com.credit.module.loan.service.domain.dto.create.CreateLoanRequest;
 import com.credit.module.loan.service.domain.dto.create.CreateLoanResponse;
 import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryRequest;
 import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryResponse;
@@ -36,8 +36,8 @@ public class LoanApplicationServiceIml implements LoanApplicationService {
     }
 
     @Override
-    public CreateLoanResponse createLoan(CreateLoanCommand createLoanCommand) {
-        return loanCreateCommandHandler.createLoan(createLoanCommand);
+    public CreateLoanResponse createLoan(CreateLoanRequest createLoanRequest) {
+        return loanCreateCommandHandler.createLoan(createLoanRequest);
     }
 
     @Override

@@ -11,7 +11,7 @@ import java.util.UUID;
 @Getter
 @Builder
 @AllArgsConstructor
-public class CreateLoanCommand {
+public class CreateLoanRequest {
     @NotNull
     private final UUID customerId;
     @NotNull

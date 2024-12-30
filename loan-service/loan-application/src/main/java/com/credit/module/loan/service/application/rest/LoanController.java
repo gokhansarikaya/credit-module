@@ -1,6 +1,6 @@
 package com.credit.module.loan.service.application.rest;
 
-import com.credit.module.loan.service.domain.dto.create.CreateLoanCommand;
+import com.credit.module.loan.service.domain.dto.create.CreateLoanRequest;
 import com.credit.module.loan.service.domain.dto.create.CreateLoanResponse;
 import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryRequest;
 import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryResponse;
@@ -27,10 +27,10 @@ public class LoanController {
     }
 
     @PostMapping
-    public ResponseEntity<CreateLoanResponse> createLoan(@RequestBody CreateLoanCommand createLoanCommand) {
-        log.info("Creating loan for customer id {}", createLoanCommand.getCustomerId());
-        CreateLoanResponse createLoanResponse = loanApplicationService.createLoan(createLoanCommand);
-        log.info("Loan created successfully for customer id {}", createLoanCommand.getCustomerId());
+    public ResponseEntity<CreateLoanResponse> createLoan(@RequestBody CreateLoanRequest createLoanRequest) {
+        log.info("Creating loan for customer id {}", createLoanRequest.getCustomerId());
+        CreateLoanResponse createLoanResponse = loanApplicationService.createLoan(createLoanRequest);
+        log.info("Loan created successfully for customer id {}", createLoanRequest.getCustomerId());
         return ResponseEntity.ok(createLoanResponse);
     }
 

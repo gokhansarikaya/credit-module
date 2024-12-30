@@ -1,6 +1,6 @@
 package com.credit.module.loan.service.domain.mapper;
 
-import com.credit.module.loan.service.domain.dto.create.CreateLoanCommand;
+import com.credit.module.loan.service.domain.dto.create.CreateLoanRequest;
 import com.credit.module.loan.service.domain.dto.create.CreateLoanResponse;
 import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryResponse;
 import com.credit.module.loan.service.domain.dto.list.LoanInstallmentResponse;
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 @Component
 public class LoanDataMapper {
 
-    public Loan createLoanCommandToLoan(CreateLoanCommand createLoanCommand) {
+    public Loan createLoanCommandToLoan(CreateLoanRequest createLoanRequest) {
         return Loan.builder()/*.customerId(new CustomerId(createLoanCommand.getCustomerId()))*/
-                .interestRate(createLoanCommand.getInterestRate())
-                .numberOfInstallment(createLoanCommand.getNumberOfInstalments())
-                .loanAmount(new Money(createLoanCommand.getAmount()))
+                .interestRate(createLoanRequest.getInterestRate())
+                .numberOfInstallment(createLoanRequest.getNumberOfInstalments())
+                .loanAmount(new Money(createLoanRequest.getAmount()))
                 .build();
     }
 

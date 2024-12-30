@@ -1,6 +1,6 @@
 package com.credit.module.loan.service.domain;
 
-import com.credit.module.loan.service.domain.dto.create.CreateLoanCommand;
+import com.credit.module.loan.service.domain.dto.create.CreateLoanRequest;
 import com.credit.module.loan.service.domain.dto.create.CreateLoanResponse;
 import com.credit.module.loan.service.domain.entity.Customer;
 import com.credit.module.loan.service.domain.entity.Loan;
@@ -50,10 +50,10 @@ public class LoanApplicationServiceTest {
     @Autowired
     LoanHelper loanHelper;
 
-    private CreateLoanCommand createLoanCommand;
-    private CreateLoanCommand createLoanCommandZeroAmount;
-    private CreateLoanCommand createLoanCommandWrongNumberOfInstallment;
-    private CreateLoanCommand createLoanCommandWrongInterestRate;
+    private CreateLoanRequest createLoanRequest;
+    private CreateLoanRequest createLoanRequestZeroAmount;
+    private CreateLoanRequest createLoanRequestWrongNumberOfInstallment;
+    private CreateLoanRequest createLoanRequestWrongInterestRate;
 
     private final UUID CUSTOMER_ID = UUID.fromString("123e4567-e89b-42d3-a456-556642440000");
     private final UUID LOAN_ID = UUID.fromString("123e4567-e89b-42d3-a456-556642440000");
@@ -61,28 +61,28 @@ public class LoanApplicationServiceTest {
 
     @BeforeAll
     public void init() {
-        createLoanCommand = CreateLoanCommand.builder()
+        createLoanRequest = CreateLoanRequest.builder()
                 .customerId(CUSTOMER_ID)
                 .amount(new BigDecimal("1000"))
                 .interestRate(0.5)
                 .numberOfInstalments(6)
                 .build();
 
-        createLoanCommandZeroAmount = CreateLoanCommand.builder()
+        createLoanRequestZeroAmount = CreateLoanRequest.builder()
                 .customerId(CUSTOMER_ID)
                 .amount(new BigDecimal("0"))
                 .interestRate(0.5)
                 .numberOfInstalments(6)
                 .build();
 
-        createLoanCommandWrongInterestRate = CreateLoanCommand.builder()
+        createLoanRequestWrongInterestRate = CreateLoanRequest.builder()
                 .customerId(CUSTOMER_ID)
                 .amount(new BigDecimal("100"))
                 .interestRate(0.6)
                 .numberOfInstalments(6)
                 .build();
 
-        createLoanCommandWrongNumberOfInstallment = CreateLoanCommand.builder()
+        createLoanRequestWrongNumberOfInstallment = CreateLoanRequest.builder()
                 .customerId(CUSTOMER_ID)
                 .amount(new BigDecimal("100"))
                 .interestRate(0.5)
@@ -97,7 +97,7 @@ public class LoanApplicationServiceTest {
                 .usedCreditLimit(new Money(new BigDecimal("0")))
                 .build();
 
-        Loan loan = loanDataMapper.createLoanCommandToLoan(createLoanCommand);
+        Loan loan = loanDataMapper.createLoanCommandToLoan(createLoanRequest);
         when(customerRepository.findCustomer(CUSTOMER_ID)).thenReturn(Optional.of(customer));
         when(loanRepository.save(any(Loan.class))).thenReturn(loan);
         when(loanHelper.checkLoan(LOAN_ID)).thenReturn(loan);
@@ -106,21 +106,21 @@ public class LoanApplicationServiceTest {
 
     @Test
     public void testCreateLoan() {
-        CreateLoanResponse createLoanResponse = loanApplicationService.createLoan(createLoanCommand);
+        CreateLoanResponse createLoanResponse = loanApplicationService.createLoan(createLoanRequest);
         assertEquals("Loan Created Successfully", createLoanResponse.getMessage());
     }
 
     @Test
     public void testCreateLoanWithZeroAmount() {
         LoanDomainException loanDomainException = assertThrows(LoanDomainException.class,
-                () -> loanApplicationService.createLoan(createLoanCommandZeroAmount));
+                () -> loanApplicationService.createLoan(createLoanRequestZeroAmount));
         assertEquals("Loan amount : 0 is not valid!", loanDomainException.getMessage());
     }
 
     @Test
     public void testCreateLoanWithWrongInterestRate() {
         LoanDomainException loanDomainException = assertThrows(LoanDomainException.class,
-                () -> loanApplicationService.createLoan(createLoanCommandWrongInterestRate));
+                () -> loanApplicationService.createLoan(createLoanRequestWrongInterestRate));
 
         assertEquals("Interest rate is not in valid range!", loanDomainException.getMessage());
     }
@@ -128,7 +128,7 @@ public class LoanApplicationServiceTest {
     @Test
     public void testCreateLoanWithWrongNumberOfInstallment() {
         LoanDomainException loanDomainException = assertThrows(LoanDomainException.class,
-                () -> loanApplicationService.createLoan(createLoanCommandWrongNumberOfInstallment));
+                () -> loanApplicationService.createLoan(createLoanRequestWrongNumberOfInstallment));
 
         assertEquals("Installment value is not valid!", loanDomainException.getMessage());
     }

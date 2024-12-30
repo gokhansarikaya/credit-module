@@ -1,7 +1,7 @@
 package com.credit.module.loan.service.domain.handler;
 
 import com.credit.module.loan.service.domain.LoanDomainService;
-import com.credit.module.loan.service.domain.dto.create.CreateLoanCommand;
+import com.credit.module.loan.service.domain.dto.create.CreateLoanRequest;
 import com.credit.module.loan.service.domain.dto.create.CreateLoanResponse;
 import com.credit.module.loan.service.domain.entity.Customer;
 import com.credit.module.loan.service.domain.entity.Loan;
@@ -32,9 +32,9 @@ public class LoanCreateCommandHandler {
     }
 
     @Transactional
-    public CreateLoanResponse createLoan(CreateLoanCommand createLoanCommand) {
-        Customer customer = loanHelper.checkCustomer(createLoanCommand.getCustomerId());
-        Loan loan = loanDataMapper.createLoanCommandToLoan(createLoanCommand);
+    public CreateLoanResponse createLoan(CreateLoanRequest createLoanRequest) {
+        Customer customer = loanHelper.checkCustomer(createLoanRequest.getCustomerId());
+        Loan loan = loanDataMapper.createLoanCommandToLoan(createLoanRequest);
         Loan createdLoan = loanDomainService.validateAndInitiateLoan(loan, customer);
         loanRepository.save(createdLoan);
         CreateLoanResponse createLoanResponse = loanDataMapper.loanToCreateLoanResponse(createdLoan);

@@ -1,6 +1,6 @@
 package com.credit.module.loan.service.domain;
 
-import com.credit.module.loan.service.domain.dto.create.CreateLoanCommand;
+import com.credit.module.loan.service.domain.dto.create.CreateLoanRequest;
 import com.credit.module.loan.service.domain.dto.pay.PayLoanRequest;
 import com.credit.module.loan.service.domain.dto.pay.PayLoanResponse;
 import com.credit.module.loan.service.domain.entity.Customer;
@@ -14,7 +14,6 @@ import com.credit.module.loan.service.domain.ports.output.repository.LoanInstall
 import com.credit.module.loan.service.domain.ports.output.repository.LoanRepository;
 import com.credit.module.loan.service.domain.valueobject.CustomerId;
 import com.credit.module.loan.service.domain.valueobject.LoanId;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,9 +47,9 @@ public class LoanApplicationServicePayTest {
     @Autowired
     LoanHelper loanHelper;
 
-    private CreateLoanCommand createLoanCommand;
-    private CreateLoanCommand createLoanCommandWrongNumberOfInstallment;
-    private CreateLoanCommand createLoanCommandWrongInterestRate;
+    private CreateLoanRequest createLoanRequest;
+    private CreateLoanRequest createLoanRequestWrongNumberOfInstallment;
+    private CreateLoanRequest createLoanRequestWrongInterestRate;
     private Loan loan;
 
     private final UUID CUSTOMER_ID = UUID.fromString("123e4567-e89b-42d3-a456-556642440000");

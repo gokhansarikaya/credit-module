@@ -1,6 +1,6 @@
 package com.credit.module.loan.service.domain.ports.input.service;
 
-import com.credit.module.loan.service.domain.dto.create.CreateLoanCommand;
+import com.credit.module.loan.service.domain.dto.create.CreateLoanRequest;
 import com.credit.module.loan.service.domain.dto.create.CreateLoanResponse;
 import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryRequest;
 import com.credit.module.loan.service.domain.dto.list.LoanInstallmentQueryResponse;
@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 
 public interface LoanApplicationService {
 
-    CreateLoanResponse createLoan(@Valid CreateLoanCommand createLoanCommand);
+    CreateLoanResponse createLoan(@Valid CreateLoanRequest createLoanRequest);
 
     LoanQueryResponse getLoans(@Valid LoanQueryRequest loanQueryRequest);
 
