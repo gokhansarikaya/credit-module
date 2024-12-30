@@ -3,20 +3,17 @@
 ## Prerequisites
 
 * Java 17
-* Postgresql
 
 ## Getting started
 
 ### How to run
 
-Credit Module needs postgresql to work. After the project is built with maven, it can be run locally with using LoanServiceApplication.java.
+Credit Module uses inmemory H2 Database to work. After the project is built with maven, it can be run locally with using LoanServiceApplication.java.
 
-An __init-schema.sql__ file was created to insert sample data into the Customer table. The module will automatically perform these operations when it runs.
+An __data.sql__ file was created to insert sample customer data into the Customer table. The module will automatically perform these operations when it runs.
 
 The following command can be used to run postgresql via Docker.
-```bash
-docker run --name myPostgresDb -p 5432:5432 -e POSTGRES_USER=sa -e POSTGRES_PASSWORD=password -e POSTGRES_DB=postgresDB -d postgres
-```
+
 
 ## Project Structure
 
