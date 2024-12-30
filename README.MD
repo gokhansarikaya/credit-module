@@ -3,6 +3,7 @@
 ## Prerequisites
 
 * Java 17
+* Docker
 
 ## Getting started
 
