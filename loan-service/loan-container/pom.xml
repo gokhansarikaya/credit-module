@@ -32,6 +32,10 @@
             <artifactId>loan-dataaccess</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.credit.module</groupId>
+            <artifactId>loan-security</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
