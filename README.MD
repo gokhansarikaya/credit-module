@@ -8,12 +8,22 @@
 
 ### How to run
 
-Credit Module uses inmemory H2 Database to work. After the project is built with maven, it can be run locally with using LoanServiceApplication.java.
+### Locally
+After the project is built with maven, it can be run locally with using LoanServiceApplication.java.
 
-An __data.sql__ file was created to insert sample customer data into the Customer table. The module will automatically perform these operations when it runs.
 
-The following command can be used to run postgresql via Docker.
+### Docker
+After the __loan-container__ module is successfully built, it creates the docker image itself.
 
+The following command can be used to run application via Docker.
+```bash
+docker run --name loanService -p 8181:8181 -d com.credit.module/loan.service:1.0.0-SNAPSHOT
+```
+
+### HINTS
+- Credit Module uses inmemory H2 Database to work.
+- A file __(data.sql)__ was created to insert sample customer data into the Customer table. The module will automatically perform these operations when it runs.
+- When building the __loan-container__ module, the Java version of the project and the Java version used by Maven must be the same wich 
 
 ## Project Structure
 
