@@ -51,6 +51,7 @@ public class LoanApplicationServiceTest {
     LoanHelper loanHelper;
 
     private CreateLoanCommand createLoanCommand;
+    private CreateLoanCommand createLoanCommandZeroAmount;
     private CreateLoanCommand createLoanCommandWrongNumberOfInstallment;
     private CreateLoanCommand createLoanCommandWrongInterestRate;
 
@@ -63,6 +64,13 @@ public class LoanApplicationServiceTest {
         createLoanCommand = CreateLoanCommand.builder()
                 .customerId(CUSTOMER_ID)
                 .amount(new BigDecimal("1000"))
+                .interestRate(0.5)
+                .numberOfInstalments(6)
+                .build();
+
+        createLoanCommandZeroAmount = CreateLoanCommand.builder()
+                .customerId(CUSTOMER_ID)
+                .amount(new BigDecimal("0"))
                 .interestRate(0.5)
                 .numberOfInstalments(6)
                 .build();
@@ -100,6 +108,13 @@ public class LoanApplicationServiceTest {
     public void testCreateLoan() {
         CreateLoanResponse createLoanResponse = loanApplicationService.createLoan(createLoanCommand);
         assertEquals("Loan Created Successfully", createLoanResponse.getMessage());
+    }
+
+    @Test
+    public void testCreateLoanWithZeroAmount() {
+        LoanDomainException loanDomainException = assertThrows(LoanDomainException.class,
+                () -> loanApplicationService.createLoan(createLoanCommandZeroAmount));
+        assertEquals("Loan amount : 0 is not valid!", loanDomainException.getMessage());
     }
 
     @Test
