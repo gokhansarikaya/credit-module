@@ -98,7 +98,7 @@ public class Loan extends AggregateRoot<LoanId> {
         for (LoanInstallment loanInstallment : loanInstallments.stream().sorted(Comparator.comparing(LoanInstallment::getDueDate)).toList()) {
             if (!loanInstallment.isPaid()
                     && totalPayAmount.isEqualOrGreaterThan(loanInstallment.getAmount())
-                    && loanInstallment.getDueDate().compareTo(lastetPayableDate) <= 0) {
+                    && (loanInstallment.getDueDate().isBefore(lastetPayableDate) || loanInstallment.getDueDate().isEqual(lastetPayableDate))) {
                 loanInstallment.payInstallment();
                 payCount++;
                 totalPayAmount = totalPayAmount.subtract(loanInstallment.getAmount());
