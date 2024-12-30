@@ -1,6 +1,6 @@
 package com.credit.module.loan.service.domain.handler;
 
-import com.credit.module.loan.service.domain.LoanDomainException;
+import com.credit.module.loan.service.domain.exception.LoanDomainException;
 import com.credit.module.loan.service.domain.dto.pay.PayLoanRequest;
 import com.credit.module.loan.service.domain.dto.pay.PayLoanResponse;
 import com.credit.module.loan.service.domain.entity.Loan;

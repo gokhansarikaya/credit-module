@@ -1,11 +1,11 @@
 package com.credit.module.loan.service.domain.handler;
 
-import com.credit.module.loan.service.domain.LoanDomainException;
 import com.credit.module.loan.service.domain.LoanDomainService;
 import com.credit.module.loan.service.domain.dto.create.CreateLoanCommand;
 import com.credit.module.loan.service.domain.dto.create.CreateLoanResponse;
 import com.credit.module.loan.service.domain.entity.Customer;
 import com.credit.module.loan.service.domain.entity.Loan;
+import com.credit.module.loan.service.domain.exception.CustomerNotFoundException;
 import com.credit.module.loan.service.domain.mapper.LoanDataMapper;
 import com.credit.module.loan.service.domain.ports.output.repository.CustomerRepository;
 import com.credit.module.loan.service.domain.ports.output.repository.LoanRepository;
@@ -45,7 +45,7 @@ public class LoanCreateCommandHandler {
     private Customer checkCustomer(UUID customerId) {
         Optional<Customer> optionalCustomer = customerRepository.findCustomer(customerId);
         if (optionalCustomer.isEmpty()) {
-            throw new LoanDomainException("Could not find customer with customer id: " + customerId);
+            throw new CustomerNotFoundException("Could not find customer with customer id: " + customerId);
         }
         return optionalCustomer.get();
     }

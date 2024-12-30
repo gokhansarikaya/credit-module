@@ -1,6 +1,4 @@
-package com.credit.module.loan.service.domain;
-
-import com.credit.module.loan.service.domain.exception.DomainException;
+package com.credit.module.loan.service.domain.exception;
 
 public class LoanDomainException extends DomainException {
     public LoanDomainException(String message) {
