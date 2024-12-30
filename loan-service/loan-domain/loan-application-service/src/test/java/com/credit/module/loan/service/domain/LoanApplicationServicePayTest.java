@@ -6,6 +6,7 @@ import com.credit.module.loan.service.domain.dto.pay.PayLoanResponse;
 import com.credit.module.loan.service.domain.entity.Customer;
 import com.credit.module.loan.service.domain.entity.Loan;
 import com.credit.module.loan.service.domain.entity.Money;
+import com.credit.module.loan.service.domain.helper.LoanHelper;
 import com.credit.module.loan.service.domain.mapper.LoanDataMapper;
 import com.credit.module.loan.service.domain.ports.input.service.LoanApplicationService;
 import com.credit.module.loan.service.domain.ports.output.repository.CustomerRepository;
@@ -44,6 +45,9 @@ public class LoanApplicationServicePayTest {
     @Autowired
     LoanDataMapper loanDataMapper;
 
+    @Autowired
+    LoanHelper loanHelper;
+
     private CreateLoanCommand createLoanCommand;
     private CreateLoanCommand createLoanCommandWrongNumberOfInstallment;
     private CreateLoanCommand createLoanCommandWrongInterestRate;
@@ -55,7 +59,7 @@ public class LoanApplicationServicePayTest {
     @Test
     public void testPayLoan() {
         when(loanRepository.findById(new LoanId(LOAN_ID))).thenReturn(Optional.of(getLoan(new BigDecimal("1000"))));
-
+        when(loanHelper.checkLoan(LOAN_ID)).thenReturn(getLoan(new BigDecimal("1000")));
         PayLoanResponse payLoanResponse = loanApplicationService.payLoan(getPayLoanRequest(new BigDecimal(500)));
         assertEquals(Boolean.FALSE, payLoanResponse.getIsPaidCompletely());
         assertEquals(2, payLoanResponse.getPaidInstallments());
@@ -64,7 +68,7 @@ public class LoanApplicationServicePayTest {
     @Test
     public void testPayLoanWithFullAmount() {
         when(loanRepository.findById(new LoanId(LOAN_ID))).thenReturn(Optional.of(getLoan(new BigDecimal("1000"))));
-
+        when(loanHelper.checkLoan(LOAN_ID)).thenReturn(getLoan(new BigDecimal("1000")));
         PayLoanResponse payLoanResponse = loanApplicationService.payLoan(getPayLoanRequest(new BigDecimal(1500)));
         assertEquals(Boolean.FALSE, payLoanResponse.getIsPaidCompletely());
         assertEquals(2, payLoanResponse.getPaidInstallments());
@@ -73,7 +77,7 @@ public class LoanApplicationServicePayTest {
     @Test
     public void testPayLoanWithZeroAmount() {
         when(loanRepository.findById(new LoanId(LOAN_ID))).thenReturn(Optional.of(getLoan(new BigDecimal("1000"))));
-
+        when(loanHelper.checkLoan(LOAN_ID)).thenReturn(getLoan(new BigDecimal("1000")));
         PayLoanResponse payLoanResponse = loanApplicationService.payLoan(getPayLoanRequest(new BigDecimal(0)));
         assertEquals(Boolean.FALSE, payLoanResponse.getIsPaidCompletely());
         assertEquals(0, payLoanResponse.getPaidInstallments());

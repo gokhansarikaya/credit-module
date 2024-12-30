@@ -6,6 +6,7 @@ import com.credit.module.loan.service.domain.entity.Customer;
 import com.credit.module.loan.service.domain.entity.Loan;
 import com.credit.module.loan.service.domain.entity.Money;
 import com.credit.module.loan.service.domain.exception.LoanDomainException;
+import com.credit.module.loan.service.domain.helper.LoanHelper;
 import com.credit.module.loan.service.domain.mapper.LoanDataMapper;
 import com.credit.module.loan.service.domain.ports.input.service.LoanApplicationService;
 import com.credit.module.loan.service.domain.ports.output.repository.CustomerRepository;
@@ -45,6 +46,9 @@ public class LoanApplicationServiceTest {
 
     @Autowired
     LoanDataMapper loanDataMapper;
+
+    @Autowired
+    LoanHelper loanHelper;
 
     private CreateLoanCommand createLoanCommand;
     private CreateLoanCommand createLoanCommandWrongNumberOfInstallment;
@@ -88,6 +92,8 @@ public class LoanApplicationServiceTest {
         Loan loan = loanDataMapper.createLoanCommandToLoan(createLoanCommand);
         when(customerRepository.findCustomer(CUSTOMER_ID)).thenReturn(Optional.of(customer));
         when(loanRepository.save(any(Loan.class))).thenReturn(loan);
+        when(loanHelper.checkLoan(LOAN_ID)).thenReturn(loan);
+        when(loanHelper.checkCustomer(CUSTOMER_ID)).thenReturn(customer);
     }
 
     @Test

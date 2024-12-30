@@ -28,9 +28,9 @@ public class LoanController {
 
     @PostMapping
     public ResponseEntity<CreateLoanResponse> createLoan(@RequestBody CreateLoanCommand createLoanCommand) {
-        log.info("Creating loan");
+        log.info("Creating loan for customer id {}", createLoanCommand.getCustomerId());
         CreateLoanResponse createLoanResponse = loanApplicationService.createLoan(createLoanCommand);
-        log.info("Loan created");
+        log.info("Loan created successfully for customer id {}", createLoanCommand.getCustomerId());
         return ResponseEntity.ok(createLoanResponse);
     }
 
@@ -43,12 +43,16 @@ public class LoanController {
     @GetMapping("installment/{loanId}")
     public ResponseEntity<LoanInstallmentQueryResponse> getLoanInstallments(@PathVariable UUID loanId) {
         LoanInstallmentQueryResponse loanInstallmentQueryResponse = loanApplicationService.getLoanInstallments(LoanInstallmentQueryRequest.builder().loanId(loanId).build());
+        log.info("Returning list of installments for loan id {}", loanId);
         return ResponseEntity.ok(loanInstallmentQueryResponse);
     }
 
     @PostMapping("/pay")
     public ResponseEntity<PayLoanResponse> payLoan(@RequestBody PayLoanRequest payLoanRequest) {
+        log.info("Payment process started for loan id {}", payLoanRequest.getLoanId());
         PayLoanResponse payLoanResponse = loanApplicationService.payLoan(payLoanRequest);
+        log.info("{} installment paid for loan id {}. Total spend amount is {}",
+                payLoanResponse.getPaidInstallments(),payLoanRequest.getLoanId(), payLoanResponse.getTotalAmountSpent());
         return ResponseEntity.ok(payLoanResponse);
     }
 }

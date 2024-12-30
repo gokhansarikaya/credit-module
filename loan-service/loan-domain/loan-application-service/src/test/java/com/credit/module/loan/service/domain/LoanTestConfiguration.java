@@ -1,5 +1,6 @@
 package com.credit.module.loan.service.domain;
 
+import com.credit.module.loan.service.domain.helper.LoanHelper;
 import com.credit.module.loan.service.domain.ports.output.repository.CustomerRepository;
 import com.credit.module.loan.service.domain.ports.output.repository.LoanInstallmentRepository;
 import com.credit.module.loan.service.domain.ports.output.repository.LoanRepository;
@@ -23,6 +24,11 @@ public class LoanTestConfiguration {
     @Bean
     public LoanInstallmentRepository loanInstallmentRepository() {
         return Mockito.mock(LoanInstallmentRepository.class);
+    }
+
+    @Bean
+    public LoanHelper loanHelper() {
+        return Mockito.mock(LoanHelper.class);
     }
 
     @Bean
