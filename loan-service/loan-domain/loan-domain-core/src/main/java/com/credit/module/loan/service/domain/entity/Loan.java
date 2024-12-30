@@ -1,6 +1,6 @@
 package com.credit.module.loan.service.domain.entity;
 
-import com.credit.module.loan.service.domain.LoanDomainException;
+import com.credit.module.loan.service.domain.exception.LoanDomainException;
 import com.credit.module.loan.service.domain.utility.DateUtility;
 import com.credit.module.loan.service.domain.valueobject.LoanId;
 import com.credit.module.loan.service.domain.valueobject.LoanInstallmentId;
@@ -44,6 +44,7 @@ public class Loan extends AggregateRoot<LoanId> {
         validateCustomerLimit();
         validateInstallment();
         validateInterestRate();
+        validateLoanAmount();
     }
 
     private void initializeLoanInstallments() {
@@ -81,6 +82,13 @@ public class Loan extends AggregateRoot<LoanId> {
         if (Double.compare(this.interestRate, MIN_INTEREST_RATE) < 0 || Double.compare(this.interestRate, MAX_INTEREST_RATE) > 0) {
             throw new LoanDomainException("Interest rate is not in valid range!");
         }
+    }
+
+    private void validateLoanAmount() {
+        if (!loanAmount.isGreaterThanZero()) {
+            throw new LoanDomainException("Loan amount : " + loanAmount.getAmount() + " is not valid!");
+        }
+
     }
 
     public PayInformation payLoan(Money payAmount) {
